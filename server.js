@@ -21,10 +21,10 @@ app.use(cors({
     origin: ["https://hefe.com.ar", "https://www.hefe.com.ar"],
     methods: ["GET", "POST", "PUT", "DELETE", "OPTIONS"],
     credentials: true,
-    allowedHeaders: ["Content-Type", "Authorization"]
+    allowedHeaders: ["Content-Type", "Authorization", "X-Requested-With", "Accept"]
 }));
 
-// Agregá esto justo debajo para forzar la respuesta a OPTIONS
+// Esto ayuda a que Hostinger no se trabe en el 'preflight'
 app.options('*', cors());
 
 //Connect Database
@@ -71,6 +71,7 @@ const seedDatabase = async () => {
 // Ejecutar la sincronización al iniciar
 
 seedDatabase();
+
 
 
 
