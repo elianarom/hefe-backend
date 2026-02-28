@@ -17,20 +17,17 @@ const Location = require("./models/Location");
 
 const app = express();
 
-app.use(cors({
+const corsOptions = {
     origin: ["https://hefe.com.ar", "https://www.hefe.com.ar"],
     credentials: true,
-    methods: ["GET", "POST", "PUT", "DELETE", "OPTIONS"]
-}));
+    methods: ["GET", "POST", "PUT", "DELETE", "OPTIONS"],
+    allowedHeaders: ["Content-Type", "Authorization", "X-Requested-With", "Accept"],
+    optionsSuccessStatus: 204
+};
 
-// Respuesta manual para el "Preflight"
-app.options('*', (req, res) => {
-    res.header('Access-Control-Allow-Origin', 'https://hefe.com.ar');
-    res.header('Access-Control-Allow-Credentials', 'true');
-    res.header('Access-Control-Allow-Methods', 'GET, POST, PUT, DELETE, OPTIONS');
-    res.header('Access-Control-Allow-Headers', 'Content-Type, Authorization');
-    res.sendStatus(204);
-});
+app.use(cors(corsOptions));
+// Esta línea es la que mata el error de "Provisional headers"
+app.options('*', cors(corsOptions));
 
 //Connect Database
 connectDB();
@@ -76,6 +73,7 @@ const seedDatabase = async () => {
 // Ejecutar la sincronización al iniciar
 
 seedDatabase();
+
 
 
 
