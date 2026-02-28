@@ -17,17 +17,20 @@ const Location = require("./models/Location");
 
 const app = express();
 
-const corsOptions = {
+app.use(cors({
     origin: ["https://hefe.com.ar", "https://www.hefe.com.ar"],
-    methods: "GET,HEAD,PUT,PATCH,POST,DELETE,OPTIONS",
     credentials: true,
-    allowedHeaders: ["Content-Type", "Authorization"],
-    preflightContinue: false,
-    optionsSuccessStatus: 204
-};
+    methods: ["GET", "POST", "PUT", "DELETE", "OPTIONS"]
+}));
 
-app.use(cors(corsOptions));
-app.options('*', cors(corsOptions)); // <--- Esto responde a la pregunta OPTIONS del navegador
+// Respuesta manual para el "Preflight"
+app.options('*', (req, res) => {
+    res.header('Access-Control-Allow-Origin', 'https://hefe.com.ar');
+    res.header('Access-Control-Allow-Credentials', 'true');
+    res.header('Access-Control-Allow-Methods', 'GET, POST, PUT, DELETE, OPTIONS');
+    res.header('Access-Control-Allow-Headers', 'Content-Type, Authorization');
+    res.sendStatus(204);
+});
 
 //Connect Database
 connectDB();
@@ -73,6 +76,7 @@ const seedDatabase = async () => {
 // Ejecutar la sincronización al iniciar
 
 seedDatabase();
+
 
 
 
