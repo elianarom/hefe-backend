@@ -20,7 +20,7 @@ const app = express();
 //Middleware to handle CORS
 app.use(
     cors({
-        origin: process.env.URL || "*",
+        origin: ["https://hefe.com.ar", "https://www.hefe.com.ar"],
         methods: ["GET", "POST", "PUT", "DELETE"],
         allowedHeaders: ["Content-Type", "Authorization"],
     })
@@ -68,4 +68,5 @@ const seedDatabase = async () => {
 };
 
 // Ejecutar la sincronización al iniciar
+
 seedDatabase();
