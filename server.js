@@ -17,15 +17,17 @@ const Location = require("./models/Location");
 
 const app = express();
 
-app.use(cors({
+const corsOptions = {
     origin: ["https://hefe.com.ar", "https://www.hefe.com.ar"],
-    methods: ["GET", "POST", "PUT", "DELETE", "OPTIONS"],
+    methods: "GET,HEAD,PUT,PATCH,POST,DELETE,OPTIONS",
     credentials: true,
-    allowedHeaders: ["Content-Type", "Authorization", "X-Requested-With", "Accept"]
-}));
+    allowedHeaders: ["Content-Type", "Authorization"],
+    preflightContinue: false,
+    optionsSuccessStatus: 204
+};
 
-// Esto ayuda a que Hostinger no se trabe en el 'preflight'
-app.options('*', cors());
+app.use(cors(corsOptions));
+app.options('*', cors(corsOptions)); // <--- Esto responde a la pregunta OPTIONS del navegador
 
 //Connect Database
 connectDB();
@@ -71,6 +73,7 @@ const seedDatabase = async () => {
 // Ejecutar la sincronización al iniciar
 
 seedDatabase();
+
 
 
 
