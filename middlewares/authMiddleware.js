@@ -16,8 +16,9 @@ const protect = async (req, res, next) => {
                 return res.status(404).json({ message: "Usuario no encontrado" });
             }
 
-            next(); // <--- Aquí sigue el flujo
+            return next(); // <--- IMPORTANTE: Retornar el next
         } else {
+            // Este es el mensaje que ves en el navegador
             return res.status(401).json({ message: "No estás autorizado para esta acción" });
         }
     } catch (error) {
@@ -53,3 +54,4 @@ const adminOnly = (req, res, next) => {
 
 
 module.exports = { protect, optionalProtect, adminOnly };
+
