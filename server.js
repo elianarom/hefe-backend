@@ -20,8 +20,8 @@ const app = express();
 app.use(
     cors({
         origin: ["https://hefe.com.ar", "https://www.hefe.com.ar"],
-        methods: ["GET", "POST", "PUT", "DELETE", "OPTIONS"],
-        credentials: true, // Esto es vital para que el navegador no bloquee la respuesta
+        methods: ["GET", "POST", "PUT", "DELETE", "OPTIONS"], // Asegúrate de incluir OPTIONS
+        credentials: true,
         allowedHeaders: ["Content-Type", "Authorization"],
     })
 );
@@ -70,6 +70,7 @@ const seedDatabase = async () => {
 // Ejecutar la sincronización al iniciar
 
 seedDatabase();
+
 
 
 
