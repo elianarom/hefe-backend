@@ -45,7 +45,7 @@ app.use("/api", configRoutes);
 app.use("/api/review", reviewRoutes);
 
 //Start Server
-const PORT = process.env.PORT || 5000;
+const PORT = process.env.PORT || 8000;
 app.listen(PORT, () => console.log(`Server funcionando en el puerto ${PORT}`));
 
 const seedDatabase = async () => {
@@ -70,5 +70,6 @@ const seedDatabase = async () => {
 // Ejecutar la sincronización al iniciar
 
 seedDatabase();
+
 
 
