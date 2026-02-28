@@ -4,25 +4,25 @@ const User = require("../models/User");
 //Middleware protect routes
 const protect = async (req, res, next) => {
     try {
-    let token = req.headers.authorization;
+        let token = req.headers.authorization;
 
-    if (token && token.startsWith("Bearer ")) {
-        token = token.split(" ")[1];
-        const decoded = jwt.verify(token, process.env.JWT_SECRET);
+        if (token && token.startsWith("Bearer ")) {
+            token = token.split(" ")[1];
+            const decoded = jwt.verify(token, process.env.JWT_SECRET);
 
-        req.user = await User.findById(decoded.id).select("-password");
+            req.user = await User.findById(decoded.id).select("-password");
 
-        if (!req.user) {
-            return res.status(404).json({ message: "Usuario no encontrado" });
+            if (!req.user) {
+                return res.status(404).json({ message: "Usuario no encontrado" });
+            }
+
+            next(); // <--- Aquí sigue el flujo
+        } else {
+            return res.status(401).json({ message: "No estás autorizado para esta acción" });
         }
-
-        next();
-    } else {
-        res.status(401).json({ message: "No estás autorizado para esta acción" });
+    } catch (error) {
+        return res.status(401).json({ message: "Token inválido o expirado", error: error.message });
     }
-} catch (error) {
-    res.status(401).json({ message: "Token inválido o expirado", error: error.message });
-}
 };
 
 const optionalProtect = async (req, res, next) => {
@@ -50,5 +50,6 @@ const adminOnly = (req, res, next) => {
         res.status(403).json({ message: "Acceso denegado. Solo administradores" });
     }
 };
+
 
 module.exports = { protect, optionalProtect, adminOnly };
