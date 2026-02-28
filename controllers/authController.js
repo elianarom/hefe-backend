@@ -191,28 +191,22 @@ const verifyUser = async (req, res) => {
 
         // --- LÓGICA DE NOTIFICACIONES ---
         try {
-            if (status === "Rechazado") {
-            await sendEmail({
-                email: user.email,
-                subject: "⚠ Acción requerida en tu cuenta - Hefe",
-                html: rejectionEmailTemplate(user.name, reason) // Pasamos el motivo al template
-            });
-        } else if (status === "Aprobado") {
-                await sendEmail({
-                    email: user.email,
-                    subject: "✓ Cuenta Verificada - Comunidad Hefe",
-                    html: verificationEmailTemplate(user.name)
-                });
-            } else if (status === "Rechazado") {
-                await sendEmail({
-                    email: user.email,
-                    subject: "⚠ Acción requerida en tu cuenta - Hefe",
-                    html: rejectionEmailTemplate(user.name)
-                });
-            }
-        } catch (mailError) {
-            console.error("Falla en envío de mail, pero el status se actualizó:", mailError);
-        }
+    if (status === "Aprobado") {
+        await sendEmail({
+            email: user.email,
+            subject: "✓ Cuenta Verificada - Comunidad Hefe",
+            html: verificationEmailTemplate(user.name)
+        });
+    } else if (status === "Rechazado") {
+        await sendEmail({
+            email: user.email,
+            subject: "⚠ Acción requerida en tu cuenta - Hefe",
+            html: rejectionEmailTemplate(user.name, reason) // Usamos el motivo enviado
+        });
+    }
+} catch (mailError) {
+    console.error("Falla en envío de mail, pero el status se actualizó:", mailError);
+}
 
         res.json({ message: `Usuario ${status} con éxito`, user });
     } catch (error) {
@@ -248,5 +242,6 @@ const changePassword = async (req, res) => {
         res.status(500).json({ message: "Error del servidor", error: error.message });
     }
 };
+
 
 module.exports = { registerUser, loginUser, getUserProfile, updateUserProfile, verifyUser, changePassword };
