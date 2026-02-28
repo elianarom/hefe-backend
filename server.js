@@ -26,7 +26,7 @@ const corsOptions = {
 };
 
 app.use(cors(corsOptions));
-// Esta línea es la que mata el error de "Provisional headers"
+// Esta línea mata el error de "Provisional headers"
 app.options('*', cors(corsOptions));
 
 //Connect Database
@@ -73,6 +73,7 @@ const seedDatabase = async () => {
 // Ejecutar la sincronización al iniciar
 
 seedDatabase();
+
 
 
 
