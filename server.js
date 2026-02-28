@@ -17,14 +17,15 @@ const Location = require("./models/Location");
 
 const app = express();
 
-app.use(
-    cors({
-        origin: ["https://hefe.com.ar", "https://www.hefe.com.ar"],
-        methods: ["GET", "POST", "PUT", "DELETE", "OPTIONS"], // Asegúrate de incluir OPTIONS
-        credentials: true,
-        allowedHeaders: ["Content-Type", "Authorization"],
-    })
-);
+app.use(cors({
+    origin: ["https://hefe.com.ar", "https://www.hefe.com.ar"],
+    methods: ["GET", "POST", "PUT", "DELETE", "OPTIONS"],
+    credentials: true,
+    allowedHeaders: ["Content-Type", "Authorization"]
+}));
+
+// Agregá esto justo debajo para forzar la respuesta a OPTIONS
+app.options('*', cors());
 
 //Connect Database
 connectDB();
@@ -70,6 +71,7 @@ const seedDatabase = async () => {
 // Ejecutar la sincronización al iniciar
 
 seedDatabase();
+
 
 
 
